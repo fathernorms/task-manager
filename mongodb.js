@@ -1,28 +1,26 @@
 // CRUD create read update delete
 
-const { MongoClient, ObjectID } = require('mongodb')
+const { MongoClient, ObjectID } = require("mongodb");
 
-const connectionURL = 'mongodb://127.0.0.1:27017'
-const databaseName = 'task-manager'
+const connectionURL = "mongodb://127.0.0.1:27017";
+const databaseName = "task-manager";
 
-MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
-    if (error) {
-        return console.log('Unable to connect to database.')
+MongoClient.connect(
+    connectionURL,
+    { useNewUrlParser: true },
+    (error, client) => {
+        if (error) {
+            return console.log("Unable to connect to database.");
+        }
+
+        const db = client.db(databaseName);
+
+        db.collection("tasks").deleteOne({
+            description: "Second Task",
+        }).then((result) => {
+            console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        });
     }
-
-    const db = client.db(databaseName)
-
-    // db.collection("users").findOne(
-    //     { _id: new ObjectID("62599b5f7bfef8f97f40378b") },
-    //     (error, user) => {
-    //         if (error) {
-    //             return console.log("Unable to fetch");
-    //         }
-    //         console.log(user);
-    //     }
-    // );
-
-    db.collection('tasks').find({completed: false}).toArray((error, tasks) => {
-        console.log(tasks)
-    })
-})
+);
